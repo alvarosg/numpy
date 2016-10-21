@@ -1299,9 +1299,11 @@ def piecewise(x, condlist, funclist, *args, **kw):
     """
     x = asanyarray(x)
     n2 = len(funclist)
-    if (isscalar(condlist) or not (isinstance(condlist[0], list) or
-                                   isinstance(condlist[0], ndarray))):
+    if isscalar(condlist):
         condlist = [condlist]
+    elif not (isinstance(condlist[0], list) or
+              isinstance(condlist[0], ndarray)):
+        condlist = [array([c]) for c in condlist]
     condlist = array(condlist, dtype=bool)
     n = len(condlist)
     # This is a hack to work around problems with NumPy's
